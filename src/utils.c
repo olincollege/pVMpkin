@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 // Registers Enum
 enum {
   R_R0 = 0,
