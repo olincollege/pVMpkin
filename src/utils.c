@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 // Registers Enum
 enum {
   R_R0 = 0,
@@ -43,8 +45,7 @@ enum {
 };
 
 enum {
-  TRAP_GETC =
-      0x20, /* get character from keyboard, not echoed onto the terminal */
+  TRAP_GETC = 0x20, /* get character from keyboard, not echoed to terminal */
   TRAP_OUT = 0x21,   /* output a character */
   TRAP_PUTS = 0x22,  /* output a word string */
   TRAP_IN = 0x23,    /* get character from keyboard, echoed onto the terminal */
