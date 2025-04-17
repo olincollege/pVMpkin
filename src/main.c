@@ -1,13 +1,8 @@
 #include <stdint.h>
-#include <stdio.h>
 #include "utils.c"
 #include "trapping.c"
 
-#define MEMORY_MAX (1 << 16)
-uint16_t memory[MEMORY_MAX];
-
 #define PC_START 0x3000;
-
 
 int main(int argc, const char* argv[]) {
   if (argc < 2) {
