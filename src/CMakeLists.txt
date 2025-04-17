@@ -9,9 +9,14 @@
 # library is used only in function bodies (PRIVATE), only in function
 # signatures/types (INTERFACE), or both (PUBLIC).
 
-add_library(utils utils.c utils.h)
 add_library(trapping trapping.c trapping.h)
+add_library(instructions instructions.c instructions.h)
+add_library(utils utils.c utils.h)
+add_library(memory memory.c memory.h)
+
 add_executable(main main.c)
 
+target_link_libraries(instructions PRIVATE utils memory)
+target_link_libraries(memory PRIVATE utils)
+target_link_libraries(main PRIVATE memory utils instructions)
 target_link_libraries(trapping PRIVATE utils)
-target_link_libraries(main PRIVATE utils)
