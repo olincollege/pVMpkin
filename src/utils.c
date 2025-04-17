@@ -1,7 +1,4 @@
-#include <stdint.h>
-
-#define MEMORY_MAX (1 << 16)
-uint16_t memory[MEMORY_MAX];
+#include "utils.h"
 
 // Registers Enum
 enum {
@@ -18,49 +15,44 @@ enum {
   R_COUNT
 };
 
-// Register Storage
-uint16_t reg[R_COUNT];
-
 // Opcodes for Instructions
 enum {
-  OP_BR = 0, /* branch */
-  OP_ADD,    /* add */
-  OP_LD,     /* load */
-  OP_ST,     /* store */
-  OP_JSR,    /* jump register */
-  OP_AND,    /* bitwise and */
-  OP_LDR,    /* load register */
-  OP_STR,    /* store register */
-  OP_RTI,    /* unused */
-  OP_NOT,    /* bitwise not */
-  OP_LDI,    /* load indirect */
-  OP_STI,    /* store indirect */
-  OP_JMP,    /* jump */
-  OP_RES,    /* reserved (unused) */
-  OP_LEA,    /* load effective address */
-  OP_TRAP    /* execute trap */
+  OP_BR = 0,
+  OP_ADD,
+  OP_LD,
+  OP_ST,
+  OP_JSR,
+  OP_AND,
+  OP_LDR,
+  OP_STR,
+  OP_RTI,
+  OP_NOT,
+  OP_LDI,
+  OP_STI,
+  OP_JMP,
+  OP_RES,
+  OP_LEA,
+  OP_TRAP
 };
 
 enum {
-  FL_POS = 1 << 0, /* Positive */
-  FL_ZRO = 1 << 1, /* Zero */
-  FL_NEG = 1 << 2  /* Negative */
+  FL_POS = 1 << 0,
+  FL_ZRO = 1 << 1,
+  FL_NEG = 1 << 2 
 };
 
 enum {
-  TRAP_GETC = 0x20, /* get character from keyboard, not echoed to terminal */
-  TRAP_OUT = 0x21,   /* output a character */
-  TRAP_PUTS = 0x22,  /* output a word string */
-  TRAP_IN = 0x23,    /* get character from keyboard, echoed onto the terminal */
-  TRAP_PUTSP = 0x24, /* output a byte string */
-  TRAP_HALT = 0x25   /* halt the program */
+  TRAP_GETC = 0x20,
+  TRAP_OUT = 0x21,
+  TRAP_PUTS = 0x22,
+  TRAP_IN = 0x23,
+  TRAP_PUTSP = 0x24,
+  TRAP_HALT = 0x25
 };
 
-// Allows to poll the keyboard state and avoid blocking the execution of the
-// program,
 enum {
-  MR_KBSR = 0xFE00, /* Keyboard Status */
-  MR_KBDR = 0xFE02, /* Keyboard data */
+  MR_KBSR = 0xFE00, 
+  MR_KBDR = 0xFE02, 
 };
 
 void update_flags(uint16_t r) {
@@ -73,28 +65,7 @@ void update_flags(uint16_t r) {
   }
 }
 
-/**
- * Writes a 16-bit value to the specified memory address.
- *
- * This function simulates writing to memory by directly updating the
- * value at the given address in the virtual memory array.
- *
- * @param address The memory address to write to.
- * @param value The 16-bit value to store at the memory location.
- */
 void mem_write(uint16_t address, uint16_t value) { memory[address] = value; }
-
-/**
- * Reads a 16-bit value from the specified memory address.
- *
- * If the address is the memory-mapped keyboard status register (MR_KBSR),
- * this function checks for a key press. If a key is pressed, it sets the
- * high bit of MR_KBSR and stores the character in the keyboard data
- * register (MR_KBDR). Otherwise, it clears the MR_KBSR.
- *
- * @param address The memory address to read from.
- * @return The 16-bit value stored at the specified memory address.
- */
 
 uint16_t mem_read(uint16_t address) {
   if (address == MR_KBSR) {
