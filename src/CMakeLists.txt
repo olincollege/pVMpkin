@@ -8,3 +8,12 @@
 # or similar. The PRIVATE/INTERFACE/PUBLIC keyword will depend on whether the
 # library is used only in function bodies (PRIVATE), only in function
 # signatures/types (INTERFACE), or both (PUBLIC).
+add_library(instructions instructions.c instructions.h)
+add_library(utils utils.c utils.h)
+add_library(memory memory.c memory.h)
+
+add_executable(main main.c)
+
+target_link_libraries(instructions utils memory)
+target_link_libraries(memory utils)
+target_link_libraries(main memory utils)
