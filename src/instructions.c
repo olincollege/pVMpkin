@@ -1,5 +1,6 @@
 #include <stdint.h>
 
+#include "memory.h"
 #include "utils.c"
 
 /**

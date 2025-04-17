@@ -1,5 +1,6 @@
 #include <stdint.h>
 
+#include "memory.h"
 #include "utils.c"
 
 #define PC_START 0x3000;
