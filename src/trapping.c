@@ -14,7 +14,7 @@ void trap_out(void) {
     }
     if (fflush(stdout) == EOF) perror("Failed to flush in OUT.");
 }
-void trap_puts(uint16_t *memory) { // double check that * instead of [] works
+void trap_puts() { // double check that * instead of [] works
     uint16_t* c = memory + reg[R_R0]; // get char pointer
     while (*c) {
     if (putc((char)*c, stdout) == EOF) {
@@ -40,7 +40,7 @@ void trap_in(void) {
     reg[R_R0] = (uint16_t)c;
     update_flags(R_R0);
 }
-void trap_putsp(uint16_t* memory) { // double check that * instead of [] works
+void trap_putsp() { // double check that * instead of [] works
     uint16_t* c = memory + reg[R_R0]; // get char pointer
     while (*c) {
     char c1 = (*c) & 0xFF; // 8 bits ; mask

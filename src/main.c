@@ -38,13 +38,13 @@ int main(int argc, const char* argv[]) {
           trap_out();
           break;
       case TRAP_PUTS:
-          trap_puts(memory);
+          trap_puts();
           break;
       case TRAP_IN:
           trap_in();
           break;
       case TRAP_PUTSP:
-          trap_putsp(memory);
+          trap_putsp();
           break;
       case TRAP_HALT:
           trap_halt(&running);
