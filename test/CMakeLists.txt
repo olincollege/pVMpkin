@@ -15,3 +15,14 @@ list(APPEND CMAKE_CTEST_ARGUMENTS --verbose)
 #     NAME test_foo
 #     COMMAND test_foo ${CRITERION_FLAGS}
 # )
+
+add_executable(test_instructions test_instructions.c)
+target_link_libraries(test_instructions
+    PRIVATE utils memory
+    PUBLIC ${CRITERION}
+)
+
+add_test(
+    NAME test_instructions
+    COMMAND test_instructions ${CRITERION_FLAGS}
+)
