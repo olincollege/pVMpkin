@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include "utils.c"
+#include "trapping.h"
 
 void trap_getc(void) {
     reg[R_R0] = (uint16_t)getc(stdin);
