@@ -1,7 +1,8 @@
 #include <stdint.h>
 
+#include "instructions.h"
 #include "memory.h"
-#include "utils.c"
+#include "utils.h"
 
 #define PC_START 0x3000;
 
@@ -23,6 +24,51 @@ int main(int argc, const char* argv[]) {
 
   int running = 1;
   while (running) {
-    /* TODO */
+    uint16_t instr = mem_read(reg[R_PC]++);
+    uint16_t op = instr >> 12;
+
+    switch (op) {
+      case OP_ADD:
+        add_instr(&instr);
+        break;
+      case OP_AND:
+        and_instr(&instr);
+        break;
+      case OP_NOT:
+        not_instr(&instr);
+        break;
+      case OP_BR:
+        branch_instr(&instr);
+        break;
+      case OP_JMP:
+        jump_instr(&instr);
+        break;
+      case OP_JSR:
+        jump_register_instr(&instr);
+        break;
+      case OP_LD:
+        load_instr(&instr);
+        break;
+      case OP_LDI:
+        ldi_instr(&instr);
+        break;
+      case OP_LDR:
+        load_reg_instr(&instr);
+        break;
+      case OP_LEA:
+        load_eff_addr_instr(&instr);
+        break;
+      case OP_ST:
+        store_instr(&instr);
+        break;
+      case OP_STI:
+        store_indirect_instr(&instr);
+        break;
+      case OP_STR:
+        store_reg_instr(&instr);
+        break;
+      case OP_TRAP:
+        // TODO
+    }
   }
 }
