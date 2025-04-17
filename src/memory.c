@@ -4,7 +4,6 @@
 
 #include "utils.h"
 
-#define MEMORY_MAX (1 << 16)
 uint16_t memory[MEMORY_MAX];
 
 void mem_write(uint16_t address, uint16_t value) { memory[address] = value; }

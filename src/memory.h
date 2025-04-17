@@ -2,6 +2,9 @@
 
 #include <stdint.h>
 
+#define MEMORY_MAX (1 << 16)
+extern uint16_t memory[MEMORY_MAX];
+
 /**
  * Writes a 16-bit value to the specified memory address.
  *
@@ -24,4 +27,4 @@ void mem_write(uint16_t address, uint16_t value);
  * @param address The memory address to read from.
  * @return The 16-bit value stored at the specified memory address.
  */
-uint16_t mem_read(uint16_t address); 
+uint16_t mem_read(uint16_t address);
