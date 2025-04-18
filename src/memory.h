@@ -4,6 +4,8 @@
 
 #define MEMORY_MAX (1 << 16)
 extern uint16_t memory[MEMORY_MAX];
+extern uint16_t (*check_key_func)(void);
+extern int (*get_char_func)(void);
 
 /**
  * Writes a 16-bit value to the specified memory address.
