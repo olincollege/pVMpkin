@@ -1,4 +1,7 @@
+#pragma once
 #include <stdint.h>
+#include <stdio.h>
+#include "memory.h"
 
 // Registers Enum
 enum {
@@ -63,5 +66,33 @@ enum {
 
 /**
  * Updates the flag according to the value stored in the provided register
+ * 
+ * @param r a uint16_t representing the register to update flags for
  */
 void update_flags(uint16_t r);
+
+/**
+ * Swap a u_int16t from little-endian to big-endian.
+ * 
+ * Most modern computers are little-endian. However, the LC-3 architecture 
+ * program expects big-endian. 
+ * 
+ * @param x the uint16_t to swap from little to big-endian. 
+ */
+uint16_t swap16(uint16_t x);
+
+/**
+ * Read an image file into memory from a file pointer.
+ * 
+ * Copies contents right into an address of memory. 
+ * 
+ * @param file a FILE pointer representing the image.
+ */
+void read_image_file(FILE* file);
+
+/**
+ * Reads an image file into memory from a path.
+ * 
+ * @param image_path a String representing the path to the image.
+ */
+int read_image(const char* image_path);
