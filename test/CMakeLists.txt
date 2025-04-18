@@ -18,7 +18,7 @@ list(APPEND CMAKE_CTEST_ARGUMENTS --verbose)
 
 add_executable(test_instructions test_instructions.c)
 target_link_libraries(test_instructions
-    PRIVATE utils memory
+    PRIVATE utils memory instructions
     PUBLIC ${CRITERION}
 )
 
@@ -29,7 +29,7 @@ add_test(
 
 add_executable(test_trapping test_trapping.c)
 target_link_libraries(test_trapping
-    PRIVATE trapping
+    PRIVATE memory trapping
     PUBLIC ${CRITERION}
 )
 add_test(

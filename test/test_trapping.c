@@ -23,7 +23,7 @@ Test(trapping, test_trap_out) {
 Test(trapping, test_trap_puts) {
     uint16_t test_memory[] = {'H', 'e', 'l', 'l', 'o', 0};
     reg[R_R0] = 0;
-    memory = test_memory;
+    uint16_t* memory = test_memory;
     FILE* output = fmemopen(NULL, 6, "w");
     stdout = output;
     trap_puts();
@@ -50,7 +50,7 @@ Test(trapping, test_trap_in) {
 Test(trapping, test_trap_putsp) {
     uint16_t test_memory[] = {'H' | ('i' << 8), '!', 0};
     reg[R_R0] = 0;
-    memory = test_memory;
+    uint16_t* memory = test_memory;
     FILE* output = fmemopen(NULL, 4, "w");
     stdout = output;
     trap_putsp();

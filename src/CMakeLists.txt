@@ -18,5 +18,5 @@ add_executable(main main.c)
 
 target_link_libraries(instructions PRIVATE utils memory)
 target_link_libraries(memory PRIVATE utils)
-target_link_libraries(main PRIVATE memory utils instructions)
-target_link_libraries(trapping PRIVATE utils)
+target_link_libraries(main PRIVATE memory utils instructions trapping)
+target_link_libraries(trapping PRIVATE memory)

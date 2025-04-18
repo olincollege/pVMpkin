@@ -3,6 +3,14 @@
 #include <stdio.h>
 #include "memory.h"
 
+#include <signal.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/termios.h>
+#include <sys/mman.h>
+#include <unistd.h>
+#include <fcntl.h>
+
 // Registers Enum
 enum {
   R_R0 = 0,
@@ -63,6 +71,25 @@ enum {
   MR_KBSR = 0xFE00, /* Keyboard Status */
   MR_KBDR = 0xFE02, /* Keyboard data */
 };
+
+
+/**
+ * 
+ */
+void disable_input_buffering(void);
+/**
+ * 
+ */
+void restore_input_buffering(void);
+/**
+ * 
+ */
+uint16_t check_key(void);
+/**
+ * 
+ */
+void handle_interrupt(int signal);
+
 
 /**
  * Updates the flag according to the value stored in the provided register
