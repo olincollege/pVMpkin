@@ -1,13 +1,19 @@
+#include <stdio.h>
 #include <stdint.h>
+
 
 #include "instructions.h"
 #include "memory.h"
 #include "trapping.h"
 #include "utils.h"
 
+
 #define PC_START 0x3000;
 
 int main(int argc, const char* argv[]) {
+  /* Ensure proper input handling from the terminal */
+  signal(SIGINT, handle_interrupt);
+  disable_input_buffering();
   if (argc < 2) {
     /* show instructions on how to use */
     printf("lc3 [image-file1] ...\n");
@@ -93,4 +99,7 @@ int main(int argc, const char* argv[]) {
         }
     }
   }
+  restore_input_buffering(); // restores the terminal back to normal
 }
+
+
