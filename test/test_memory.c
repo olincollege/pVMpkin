@@ -21,7 +21,7 @@ Test(mem_write, writes_to_memory) {
 
   mem_write(address, value);
 
-  cr_assert(eq(uint16_t, memory[address], value));
+  cr_assert(eq(u16, memory[address], value));
 }
 
 // Test reading a value from memory
@@ -37,7 +37,7 @@ Test(mem_read, normal_memory_read) {
 
   uint16_t result = mem_read(address);
 
-  cr_assert(eq(uint16_t, result, value));
+  cr_assert(eq(u16, result, value));
 }
 
 // Test keyboard status register when no key is pressed
@@ -50,7 +50,7 @@ Test(mem_read, keyboard_status_register_no_key_pressed) {
 
   uint16_t result = mem_read(address);
 
-  cr_assert(eq(uint16_t, result, 0));
+  cr_assert(eq(u16, result, 0));
 }
 
 // Test keyboard status register when a key is pressed
@@ -63,7 +63,7 @@ Test(mem_read, keyboard_status_register_key_pressed) {
 
   uint16_t result = mem_read(address);
 
-  cr_assert(eq(uint16_t, result, (1 << 15)));
+  cr_assert(eq(u16, result, (1 << 15)));
 
-  cr_assert(eq(uint16_t, memory[MR_KBDR], 0x41));  // 'A' in ASCII
+  cr_assert(eq(u16, memory[MR_KBDR], 0x41));  // 'A' in ASCII
 }
