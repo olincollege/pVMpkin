@@ -74,19 +74,26 @@ enum {
 
 
 /**
- * 
+ * Disables input buffering to allow immediate keypress detection.
  */
 void disable_input_buffering(void);
+
 /**
- * 
+ * Restores the default input buffering behavior.
  */
 void restore_input_buffering(void);
+
 /**
+ * Checks if a key has been pressed and returns its value.
  * 
+ * @return The key pressed as a 16-bit unsigned integer, or 0 if no key is pressed.
  */
 uint16_t check_key(void);
+
 /**
+ * Handles interrupt signals (e.g., SIGINT) to perform cleanup or other actions.
  * 
+ * @param signal The signal number that triggered the interrupt.
  */
 void handle_interrupt(int signal);
 
