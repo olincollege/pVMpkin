@@ -27,11 +27,23 @@ add_test(
     COMMAND test_instructions ${CRITERION_FLAGS}
 )
 
+add_executable(test_memory test_memory.c)
+target_link_libraries(test_memory
+    PRIVATE utils memory
+    PUBLIC ${CRITERION}
+)
+
+add_test(
+    NAME test_memory
+    COMMAND test_memory ${CRITERION_FLAGS}
+)
+
 add_executable(test_trapping test_trapping.c)
 target_link_libraries(test_trapping
     PRIVATE memory trapping
     PUBLIC ${CRITERION}
 )
+
 add_test(
     NAME test_trapping
     COMMAND test_trapping ${CRITERION_FLAGS}

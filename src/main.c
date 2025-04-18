@@ -1,12 +1,11 @@
-#include <stdio.h>
 #include <stdint.h>
-
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "instructions.h"
 #include "memory.h"
 #include "trapping.h"
 #include "utils.h"
-
 
 #define PC_START 0x3000;
 
@@ -99,7 +98,5 @@ int main(int argc, const char* argv[]) {
         }
     }
   }
-  restore_input_buffering(); // restores the terminal back to normal
+  restore_input_buffering();  // restores the terminal back to normal
 }
-
-

@@ -1,10 +1,11 @@
-#include <stdint.h>
 #include "utils.h"
+
+#include <stdint.h>
+#include <stdlib.h>
 
 // Register Storage
 uint16_t reg[R_COUNT];
 struct termios original_tio;
-
 
 void disable_input_buffering(void) {
   tcgetattr(STDIN_FILENO, &original_tio);
@@ -43,9 +44,7 @@ void update_flags(uint16_t r) {
   }
 }
 
-uint16_t swap16(uint16_t x) {
-  return (x << 8) | (x >> 8);
-}
+uint16_t swap16(uint16_t x) { return (x << 8) | (x >> 8); }
 
 void read_image_file(FILE* file) {
   /* the origin tells us where in memory to place the image */
@@ -59,16 +58,17 @@ void read_image_file(FILE* file) {
   size_t read = fread(p, sizeof(uint16_t), max_read, file);
 
   /* swap to little endian */
-  while (read-- > 0)
-  {
-      *p = swap16(*p);
-      ++p;
+  while (read-- > 0) {
+    *p = swap16(*p);
+    ++p;
   }
 }
 
 int read_image(const char* image_path) {
   FILE* file = fopen(image_path, "rb");
-  if (!file) { return 0; };
+  if (!file) {
+    return 0;
+  };
   read_image_file(file);
   fclose(file);
   return 1;
