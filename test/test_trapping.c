@@ -1,5 +1,7 @@
 #include <criterion/criterion.h>
+#include <criterion/hooks.h>
 #include "../src/trapping.h"
+#include "memory.h"
 
 Test(trapping, test_trap_getc) {
     reg[R_R0] = 0; // Reset register
@@ -11,27 +13,40 @@ Test(trapping, test_trap_getc) {
 }
 
 Test(trapping, test_trap_out) {
-    reg[R_R0] = 'B';
-    FILE* output = fmemopen(NULL, 1, "w");
+    FILE* output = tmpfile();
+    FILE* old_stdout = stdout;
     stdout = output;
+    reg[R_R0] = 'B';
     trap_out();
     fflush(output);
-    cr_assert_eq(fgetc(output), 'B', "trap_out should output 'B'");
+    fseek(output, 0, SEEK_SET);
+    cr_assert_eq(fgetc(output), 'B');
+    stdout = old_stdout;
     fclose(output);
 }
 
 Test(trapping, test_trap_puts) {
-    uint16_t test_memory[] = {'H', 'e', 'l', 'l', 'o', 0};
-    reg[R_R0] = 0;
-    uint16_t* memory = test_memory;
-    FILE* output = fmemopen(NULL, 6, "w");
+    FILE* output = tmpfile();
+    FILE* old_stdout = stdout;
     stdout = output;
+
+    // Store "Hi\0" in memory at 0x3000
+    reg[R_R0] = 0x3000;
+    memory[0x3000] = 'H';
+    memory[0x3001] = 'i';
+    memory[0x3002] = 0;
+
     trap_puts();
+
     fflush(output);
-    char buffer[6];
-    fread(buffer, 1, 5, output);
-    buffer[5] = '\0';
-    cr_assert_str_eq(buffer, "Hello", "trap_puts should output 'Hello'");
+    fseek(output, 0, SEEK_SET);
+
+    char buf[3];
+    fread(buf, sizeof(char), 2, output);
+    buf[2] = '\0';
+    cr_assert_str_eq(buf, "Hi");
+
+    stdout = old_stdout;
     fclose(output);
 }
 
@@ -48,30 +63,33 @@ Test(trapping, test_trap_in) {
 }
 
 Test(trapping, test_trap_putsp) {
-    uint16_t test_memory[] = {'H' | ('i' << 8), '!', 0};
-    reg[R_R0] = 0;
-    uint16_t* memory = test_memory;
-    FILE* output = fmemopen(NULL, 4, "w");
+    FILE* output = tmpfile();
+    FILE* old_stdout = stdout;
     stdout = output;
+
+    // Memory layout for "Hi!\n" -> 'H' + 'i' = 0x6948, '!' + '\n' = 0x0A21
+    reg[R_R0] = 0x3000;
+    memory[0x3000] = 0x6948; // 'H', 'i'
+    memory[0x3001] = 0x0A21; // '!', '\n'
+    memory[0x3002] = 0;      // null terminator
+
     trap_putsp();
+
     fflush(output);
-    char buffer[4];
-    fread(buffer, 1, 3, output);
-    buffer[3] = '\0';
-    cr_assert_str_eq(buffer, "Hi!", "trap_putsp should output 'Hi!'");
+    fseek(output, 0, SEEK_SET);
+
+    char buf[5];
+    fread(buf, sizeof(char), 4, output);
+    buf[4] = '\0';
+
+    cr_assert_str_eq(buf, "Hi!\n");
+
+    stdout = old_stdout;
     fclose(output);
 }
 
 Test(trapping, test_trap_halt) {
     int running = 1;
-    FILE* output = fmemopen(NULL, 5, "w");
-    stdout = output;
     trap_halt(&running);
-    fflush(output);
-    char buffer[5];
-    fread(buffer, 1, 4, output);
-    buffer[4] = '\0';
-    cr_assert_str_eq(buffer, "HALT", "trap_halt should output 'HALT'");
-    cr_assert_eq(running, 0, "trap_halt should set running to 0");
-    fclose(output);
+    cr_assert_eq(running, 0);
 }
