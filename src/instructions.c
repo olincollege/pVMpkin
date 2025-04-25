@@ -21,7 +21,7 @@ void add_instr(uint16_t* instr) {
   /* Check for immediate mode and handle the operation accordingly */
   if (imm_flag) {
     uint16_t imm5 = sign_extend(*instr & 0x1F, 5);
-    reg[first_value_reg] = reg[first_value_reg] + imm5;
+    reg[dest_reg] = reg[first_value_reg] + imm5;
   } else {
     uint16_t second_value_reg = (*instr & 0x7);
     reg[dest_reg] = reg[first_value_reg] + reg[second_value_reg];
@@ -106,7 +106,7 @@ void load_reg_instr(uint16_t* instr) {
   uint16_t value_reg = (*instr >> 6) & 0x7;
   uint16_t offset = sign_extend(*instr & 0x3F, 6);
 
-  reg[dest_reg] = mem_read(reg[value_reg] += offset);
+  reg[dest_reg] = mem_read(reg[value_reg] + offset);
   update_flags(dest_reg);
 }
 
