@@ -7,12 +7,9 @@
 #include "trapping.h"
 #include "utils.h"
 
-#define PC_START 0x3000;
+#define PC_START 0x3000
 
 int main(int argc, const char* argv[]) {
-  /* Ensure proper input handling from the terminal */
-  signal(SIGINT, handle_interrupt);
-  disable_input_buffering();
   if (argc < 2) {
     /* show instructions on how to use */
     printf("lc3 [image-file1] ...\n");
@@ -25,6 +22,10 @@ int main(int argc, const char* argv[]) {
       exit(1);
     }
   }
+
+  /* Ensure proper input handling from the terminal */
+  signal(SIGINT, handle_interrupt);
+  disable_input_buffering();
 
   /* since one condition flag should be set at all times, set the Z flag*/
   reg[R_COND] = FL_ZRO;
