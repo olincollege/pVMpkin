@@ -19,8 +19,12 @@ int main(int argc, const char* argv[]) {
     exit(2);
   }
 
-  /* TODO: load the image given in the arguments */
-  /* TODO: setup for specific platform */
+  for (int i = 1; i < argc; i++) {
+    if (!read_image(argv[i])) {
+      printf("failed to load image: %s\n", argv[i]);
+      exit(1);
+    }
+  }
 
   /* since one condition flag should be set at all times, set the Z flag*/
   reg[R_COND] = FL_ZRO;
