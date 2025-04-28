@@ -12,7 +12,7 @@
 int main(int argc, const char* argv[]) {
   if (argc < 2) {
     /* show instructions on how to use */
-    printf("lc3 [image-file1] ...\n");
+    printf("main [audio-file1] ...\n");
     exit(2);
   }
 

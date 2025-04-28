@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include "audio.h"
 #include "memory.h"
 
 // Registers Enum
@@ -84,14 +85,15 @@ void restore_input_buffering(void);
 
 /**
  * Checks if a key has been pressed and returns its value.
- * 
- * @return The key pressed as a 16-bit unsigned integer, or 0 if no key is pressed.
+ *
+ * @return The key pressed as a 16-bit unsigned integer, or 0 if no key is
+ * pressed.
  */
 uint16_t check_key(void);
 
 /**
  * Handles interrupt signals (e.g., SIGINT) to perform cleanup or other actions.
- * 
+ *
  * @param signal The signal number that triggered the interrupt.
  */
 void handle_interrupt(int signal);
