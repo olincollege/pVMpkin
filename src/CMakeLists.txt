@@ -13,10 +13,16 @@ add_library(trapping trapping.c trapping.h)
 add_library(instructions instructions.c instructions.h)
 add_library(utils utils.c utils.h)
 add_library(memory memory.c memory.h)
+add_library(audio audio.c audio.h)
 
 add_executable(main main.c)
 
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+target_link_libraries(audio ${SDL2_LIBRARIES})
+
 target_link_libraries(instructions PRIVATE utils memory)
-target_link_libraries(memory PRIVATE utils)
-target_link_libraries(main PRIVATE memory utils instructions trapping)
+target_link_libraries(memory PRIVATE utils audio)
+target_link_libraries(main PRIVATE memory utils instructions trapping audio)
 target_link_libraries(trapping PRIVATE memory)
+target_link_libraries(utils PRIVATE audio)
