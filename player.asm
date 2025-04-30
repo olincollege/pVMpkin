@@ -6,7 +6,7 @@
 LOOP
 
     LDR R2, R0, #0
-    ST R2, MR_AUDIO_DATA
+    STI R2, MR_AUDIO_DATA
 
     ADD R0, R0, #1
 
