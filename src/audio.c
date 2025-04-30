@@ -1,14 +1,17 @@
 #include "audio.h"
 
+#include <SDL2/SDL.h>
 #include <stdint.h>
 
 #include "utils.h"
 
+SDL_AudioDeviceID audio_device;
+
 int process_audio(const char* audio_path, const char* output_pcm) {
   char command[512];
   snprintf(command, sizeof(command),
-           "ffmpeg -y -i \"%s\" -t 5 -ar 8000 -ac 1 -f u8 \"%s\"", audio_path,
-           output_pcm);
+           "ffmpeg -y -i \"%s\" -t 5 -ar 8000 -ac 1 -f s16le \"%s\"",
+           audio_path, output_pcm);
 
   int ret = system(command);
 
@@ -30,30 +33,57 @@ int pcm_to_obj(const char* output_pcm, const char* output_obj) {
     return 0;
   }
 
-  uint16_t address = 0xF000;
+  uint16_t address = 0x5000;
   address = swap16(address);
 
   fwrite(&address, sizeof(address), 1, obj_file);
 
   while (1) {
-    uint8_t first_half, second_half;
-    uint16_t final_word;
-    size_t ret1 = fread(&first_half, sizeof(uint8_t), 1, pcm_file);
-    size_t ret2 = fread(&second_half, sizeof(uint8_t), 1, pcm_file);
+    uint16_t audio_sample;
+    size_t ret = fread(&audio_sample, sizeof(uint16_t), 1, pcm_file);
 
-    if (ret1 == 0) {
+    if (ret == 0) {
       break;
     }
 
-    if (ret2 == 0) {
-      final_word = swap16((0 << 8 | first_half));
-    } else {
-      final_word = swap16((second_half << 8 | first_half));
-    }
+    audio_sample = swap16(audio_sample);
 
-    fwrite(&final_word, sizeof(final_word), 1, obj_file);
+    fwrite(&audio_sample, sizeof(audio_sample), 1, obj_file);
   }
 
   fclose(pcm_file);
   fclose(obj_file);
+
+  return 1;
+}
+
+void audio_init(void) {
+  if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+    fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
+    return;
+  }
+  SDL_AudioSpec want = {0};
+  want.freq = 8000;
+  want.format = AUDIO_U16SYS;
+  want.channels = 1;
+  want.samples = 1024;
+  audio_device = SDL_OpenAudioDevice(NULL, 0, &want, NULL, 0);
+
+  if (audio_device == 0) {
+    fprintf(stderr, "SDL_OpenAudioDevice failed: %s\n", SDL_GetError());
+    return;
+  }
+  fprintf(stdout, "playing audio");
+
+  SDL_PauseAudioDevice(audio_device, 0);
+}
+
+void audio_output(uint16_t audio_sample) {
+  fprintf(stdout, "playing audio");
+  SDL_QueueAudio(audio_device, &audio_sample, sizeof(audio_sample));
+}
+
+void audio_close(void) {
+  SDL_CloseAudioDevice(audio_device);
+  SDL_Quit();
 }
