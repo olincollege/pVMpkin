@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "audio.h"
 #include "instructions.h"
 #include "memory.h"
 #include "trapping.h"
@@ -14,6 +15,13 @@ int main(int argc, const char* argv[]) {
     /* show instructions on how to use */
     printf("main [audio-file1] ...\n");
     exit(2);
+  }
+
+  audio_init();
+
+  if (!read_image("../../player.obj")) {
+    printf("failed to load player");
+    exit(1);
   }
 
   for (int i = 1; i < argc; i++) {
@@ -104,4 +112,5 @@ int main(int argc, const char* argv[]) {
     }
   }
   restore_input_buffering();  // restores the terminal back to normal
+  audio_close();
 }
