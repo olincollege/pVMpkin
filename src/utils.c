@@ -61,7 +61,7 @@ void read_image_file(FILE* file) {
   uint16_t* p = memory + origin;
   size_t read = fread(p, sizeof(uint16_t), max_read, file);
 
-  /* swap to little endian */
+  // /* swap to little endian */
   while (read-- > 0) {
     *p = swap16(*p);
     ++p;
@@ -74,11 +74,10 @@ int read_image(const char* image_path) {
 
   if (!strcmp(image_path + strlen(image_path) - strlen(suffix), suffix)) {
     const char* output_pcm = "audio.pcm";
-    if (process_audio(image_path, output_pcm) != 0) {
+    if (process_audio(image_path, output_pcm) == 0) {
       pcm_to_obj(output_pcm, output_obj);
-      return 0;
     } else {
-      return 1;
+      return 0;
     }
   } else {
     output_obj = image_path;
