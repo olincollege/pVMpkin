@@ -24,11 +24,9 @@ int main(int argc, const char* argv[]) {
     exit(1);
   }
 
-  for (int i = 1; i < argc; i++) {
-    if (!read_image(argv[i])) {
-      printf("failed to load image: %s\n", argv[i]);
-      exit(1);
-    }
+  if (!read_image(argv[1])) {
+    printf("failed to load image: %s\n", argv[1]);
+    exit(1);
   }
 
   /* Ensure proper input handling from the terminal */
