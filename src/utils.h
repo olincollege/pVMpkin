@@ -69,8 +69,9 @@ enum {
 // Allows to poll the keyboard state and avoid blocking the execution of the
 // program,
 enum {
-  MR_KBSR = 0xFE00, /* Keyboard Status */
-  MR_KBDR = 0xFE02, /* Keyboard data */
+  MR_KBSR = 0xFE00,       /* Keyboard Status */
+  MR_KBDR = 0xFE02,       /* Keyboard data */
+  MR_AUDIO_DATA = 0xFE04, /* Audio data */
 };
 
 /**
