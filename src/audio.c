@@ -25,11 +25,13 @@ int process_audio(const char* audio_path, const char* output_pcm) {
 int pcm_to_obj(const char* output_pcm, const char* output_obj) {
   FILE* pcm_file = fopen(output_pcm, "rb");
   if (!pcm_file) {
+    fprintf(stderr, "Error: pcm_file failed\n");
     return 0;
   }
 
   FILE* obj_file = fopen(output_obj, "wb");
   if (!obj_file) {
+    fprintf(stderr, "Error: obj_file failed\n");
     return 0;
   }
 
@@ -66,21 +68,30 @@ void audio_init(void) {
   want.freq = 8000;
   want.format = AUDIO_U16SYS;
   want.channels = 1;
-  want.samples = 1024;
+  want.samples = 5096;
   audio_device = SDL_OpenAudioDevice(NULL, 0, &want, NULL, 0);
 
   if (audio_device == 0) {
     fprintf(stderr, "SDL_OpenAudioDevice failed: %s\n", SDL_GetError());
     return;
   }
-  fprintf(stdout, "playing audio");
-
-  SDL_PauseAudioDevice(audio_device, 0);
 }
 
+static int queued_samples = 0;
+
 void audio_output(uint16_t audio_sample) {
-  fprintf(stdout, "playing audio");
   SDL_QueueAudio(audio_device, &audio_sample, sizeof(audio_sample));
+    queued_samples++;
+
+    if (queued_samples == 500) {
+        SDL_PauseAudioDevice(audio_device, 0);
+        fprintf(stdout, "Audio started\n");
+    }
+}
+
+void audio_reset_buffering(void) {
+    queued_samples = 0;
+    SDL_ClearQueuedAudio(audio_device);
 }
 
 void audio_close(void) {
