@@ -81,17 +81,17 @@ static int queued_samples = 0;
 
 void audio_output(uint16_t audio_sample) {
   SDL_QueueAudio(audio_device, &audio_sample, sizeof(audio_sample));
-    queued_samples++;
+  queued_samples++;
 
-    if (queued_samples == 500) {
-        SDL_PauseAudioDevice(audio_device, 0);
-        fprintf(stdout, "Audio started\n");
-    }
+  if (queued_samples == 500) {
+    SDL_PauseAudioDevice(audio_device, 0);
+    fprintf(stdout, "Audio started\n");
+  }
 }
 
 void audio_reset_buffering(void) {
-    queued_samples = 0;
-    SDL_ClearQueuedAudio(audio_device);
+  queued_samples = 0;
+  SDL_ClearQueuedAudio(audio_device);
 }
 
 void audio_close(void) {

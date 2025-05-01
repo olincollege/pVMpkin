@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+#include "audio.h"
+
 #define MEMORY_MAX (1 << 16)
 extern uint16_t memory[MEMORY_MAX];
 extern uint16_t (*check_key_func)(void);

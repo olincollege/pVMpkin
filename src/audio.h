@@ -12,4 +12,6 @@ void audio_init(void);
 
 void audio_output(uint16_t audio_sample);
 
+void audio_reset_buffering(void);
+
 void audio_close(void);
