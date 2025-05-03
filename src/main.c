@@ -166,6 +166,8 @@ int main(int argc, const char* argv[]) {
             trap_halt(&running);
             break;
           default:
+            printf("Unknown trapcode\n");
+            running = 0;
             break;
         }
         break;
