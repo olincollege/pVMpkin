@@ -4,9 +4,14 @@
 
 #include "audio.h"
 
-#define MEMORY_MAX (1 << 16)
+#define MEMORY_MAX (1U << 16U)
+
+
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
 extern uint16_t memory[MEMORY_MAX];
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
 extern uint16_t (*check_key_func)(void);
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
 extern int (*get_char_func)(void);
 
 /**
