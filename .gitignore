@@ -6,7 +6,7 @@ build/
 # Object files
 *.o
 *.ko
-*.obj
+# *.obj
 *.elf
 
 # Linker output
