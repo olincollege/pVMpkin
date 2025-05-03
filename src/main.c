@@ -84,8 +84,8 @@ int main(int argc, const char* argv[]) {
         SDL_Quit();
         restore_input_buffering();
         audio_close();
+        printf("Exited Gracefully\n");
         // NOLINTNEXTLINE(concurrency-mt-unsafe)
-        printf("Exited Gracefully");
         exit(0);
       }
     }
