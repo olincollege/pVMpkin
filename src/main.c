@@ -15,11 +15,9 @@
 #define OPCODE_SHIFT (uint16_t)12
 #define FIRST_8BIT_MASK (uint16_t)0xFF
 
-
 int main(int argc, const char* argv[]) {
-
   Uint32 last_frame_time = 0;
-  const Uint32 frame_delay = 1000 / 60; // 60 FPS
+  const Uint32 frame_delay = 1000 / 60;  // 60 FPS
 
   if (argc < 2) {
     /* show instructions on how to use */
@@ -46,27 +44,22 @@ int main(int argc, const char* argv[]) {
     // SDL failed to initialize
     return 1;
   }
-  
-  SDL_Window* window = SDL_CreateWindow("Memory Map",
-    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-    WINDOW_SIZE, WINDOW_SIZE,
-    (Uint32)SDL_WINDOW_SHOWN | (Uint32)SDL_WINDOW_RESIZABLE
-    );
 
-  SDL_Renderer* renderer = SDL_CreateRenderer(
-    window, -1, SDL_RENDERER_ACCELERATED
-  );
+  SDL_Window* window = SDL_CreateWindow(
+      "Memory Map", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_SIZE,
+      WINDOW_SIZE, (Uint32)SDL_WINDOW_SHOWN | (Uint32)SDL_WINDOW_RESIZABLE);
+  SDL_Renderer* renderer =
+      SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-  SDL_Texture* texture = SDL_CreateTexture(
-    renderer,
-    SDL_PIXELFORMAT_RGBA8888, // 32-bit texture
-    SDL_TEXTUREACCESS_STREAMING, // update every frame
-    MEMORY_MAP_DIM, MEMORY_MAP_DIM
-);
+  SDL_Texture* texture =
+      SDL_CreateTexture(renderer,
+                        SDL_PIXELFORMAT_RGBA8888,     // 32-bit texture
+                        SDL_TEXTUREACCESS_STREAMING,  // update every frame
+                        MEMORY_MAP_DIM, MEMORY_MAP_DIM);
 
   /* Ensure proper input handling from the terminal */
-  //NOLINTNEXTLINE(bugprone-signal-handler,cert-sig30-c)
-  if (signal(SIGINT, handle_interrupt) == SIG_ERR) { 
+  // NOLINTNEXTLINE(bugprone-signal-handler,cert-sig30-c)
+  if (signal(SIGINT, handle_interrupt) == SIG_ERR) {
     error_and_exit("Unable to set signal handler.");
   }
   disable_input_buffering();
@@ -79,7 +72,7 @@ int main(int argc, const char* argv[]) {
 
   int running = 1;
   while (running) {
-    uint16_t instr = mem_read(reg[R_PC]++);
+    uint32_t instr = mem_read(reg[R_PC]++);
     uint16_t opcode = instr >> OPCODE_SHIFT;
 
     /* TODO: Implement Memory Map */
@@ -96,57 +89,56 @@ int main(int argc, const char* argv[]) {
     }
     Uint32 current_time = SDL_GetTicks();
 
-    if (current_time - last_frame_time >= frame_delay) {// 60 FPS
+    if (current_time - last_frame_time >= frame_delay) {  // 60 FPS
       /* update the frame */
       update_texture(texture, memory);
       SDL_RenderClear(renderer);
 
-      SDL_Rect dest_rect = { 0, 0, WINDOW_SIZE, WINDOW_SIZE };
+      SDL_Rect dest_rect = {0, 0, WINDOW_SIZE, WINDOW_SIZE};
       SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
       SDL_RenderPresent(renderer);
       last_frame_time = current_time;
     }
 
-
     switch (opcode) {
       case OP_ADD:
-        add_instr(&instr);
+        add_instr(instr);
         break;
       case OP_AND:
-        and_instr(&instr);
+        and_instr(instr);
         break;
       case OP_NOT:
-        not_instr(&instr);
+        not_instr(instr);
         break;
       case OP_BR:
-        branch_instr(&instr);
+        branch_instr(instr);
         break;
       case OP_JMP:
-        jump_instr(&instr);
+        jump_instr(instr);
         break;
       case OP_JSR:
-        jump_register_instr(&instr);
+        jump_register_instr(instr);
         break;
       case OP_LD:
-        load_instr(&instr);
+        load_instr(instr);
         break;
       case OP_LDI:
-        ldi_instr(&instr);
+        ldi_instr(instr);
         break;
       case OP_LDR:
-        load_reg_instr(&instr);
+        load_reg_instr(instr);
         break;
       case OP_LEA:
-        load_eff_addr_instr(&instr);
+        load_eff_addr_instr(instr);
         break;
       case OP_ST:
-        store_instr(&instr);
+        store_instr(instr);
         break;
       case OP_STI:
-        store_indirect_instr(&instr);
+        store_indirect_instr(instr);
         break;
       case OP_STR:
-        store_reg_instr(&instr);
+        store_reg_instr(instr);
         break;
       case OP_TRAP:
         reg[R_R7] = reg[R_PC];
