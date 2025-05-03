@@ -16,8 +16,13 @@ add_library(trapping trapping.c trapping.h)
 add_library(instructions instructions.c instructions.h)
 add_library(utils utils.c utils.h)
 add_library(memory memory.c memory.h)
+add_library(audio audio.c audio.h)
 
 add_executable(pVMpkin main.c)
+
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+target_link_libraries(audio ${SDL2_LIBRARIES})
 
 target_link_libraries(utils PRIVATE ${SDL2_LIBRARIES})
 target_link_libraries(pVMpkin PRIVATE ${SDL2_LIBRARIES})

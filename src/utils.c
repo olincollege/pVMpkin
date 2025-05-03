@@ -2,6 +2,9 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "audio.h"
 
 // Register Storage
 uint16_t reg[R_COUNT];
@@ -58,7 +61,7 @@ void read_image_file(FILE* file) {
   uint16_t* p = memory + origin;
   size_t read = fread(p, sizeof(uint16_t), max_read, file);
 
-  /* swap to little endian */
+  // /* swap to little endian */
   while (read-- > 0) {
     *p = swap16(*p);
     ++p;
@@ -66,7 +69,22 @@ void read_image_file(FILE* file) {
 }
 
 int read_image(const char* image_path) {
-  FILE* file = fopen(image_path, "rb");
+  const char* output_obj = "audio.obj";
+  char* suffix_wav = ".wav";
+  char* suffix_mp3 = ".mp3";
+
+  if (!strcmp(image_path + strlen(image_path) - strlen(suffix_wav), suffix_wav) || !strcmp(image_path + strlen(image_path) - strlen(suffix_mp3), suffix_mp3)) {
+    const char* output_pcm = "audio.pcm";
+    if (process_audio(image_path, output_pcm) == 0) {
+      pcm_to_obj(output_pcm, output_obj);
+    } else {
+      return 0;
+    }
+  } else {
+    output_obj = image_path;
+  }
+
+  FILE* file = fopen(output_obj, "rb");
   if (!file) {
     return 0;
   };

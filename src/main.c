@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 
+#include "audio.h"
 #include "instructions.h"
 #include "memory.h"
 #include "trapping.h"
@@ -20,15 +21,20 @@ int main(int argc, const char* argv[]) {
 
   if (argc < 2) {
     /* show instructions on how to use */
-    printf("lc3 [image-file1] ...\n");
+    printf("main [audio-file1] ...\n");
     exit(2);
   }
 
-  for (int i = 1; i < argc; i++) {
-    if (!read_image(argv[i])) {
-      printf("failed to load image: %s\n", argv[i]);
-      exit(1);
-    }
+  audio_init();
+
+  if (!read_image("../../player.obj")) {
+    printf("failed to load player");
+    exit(1);
+  }
+
+  if (!read_image(argv[1])) {
+    printf("failed to load image: %s\n", argv[1]);
+    exit(1);
   }
 
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -159,4 +165,5 @@ int main(int argc, const char* argv[]) {
     }
   }
   restore_input_buffering();  // restores the terminal back to normal
+  audio_close();
 }

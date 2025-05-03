@@ -26,7 +26,7 @@ void add_instr(uint16_t* instr) {
     uint16_t second_value_reg = (*instr & 0x7);
     reg[dest_reg] = reg[first_value_reg] + reg[second_value_reg];
   }
-
+  
   update_flags(dest_reg);
 }
 
@@ -124,9 +124,9 @@ void store_instr(uint16_t* instr) {
 }
 
 void store_indirect_instr(uint16_t* instr) {
-  uint16_t dest_reg = (*instr >> 9) & 0x7;
+  uint16_t val_reg = (*instr >> 9) & 0x7;
   uint16_t pc_offset = sign_extend(*instr & 0x1FF, 9);
-  mem_write(mem_read(reg[R_PC] + pc_offset), reg[dest_reg]);
+  mem_write(mem_read(reg[R_PC] + pc_offset), reg[val_reg]);
 }
 
 void store_reg_instr(uint16_t* instr) {
