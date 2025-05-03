@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <SDL2/SDL.h>
 
 #include "instructions.h"
 #include "memory.h"
@@ -8,8 +9,35 @@
 #include "utils.h"
 
 #define PC_START 0x3000
+#define WINDOW_SIZE 1024
+#define MEMORY_MAP_DIM 256
+
+void update_texture(SDL_Texture* texture, uint16_t* memory) {
+  void* pixels;
+  int pitch;
+  SDL_LockTexture(texture, NULL, &pixels, &pitch);
+
+  uint32_t* pixel_ptr = (uint32_t*)pixels;
+
+  for (uint16_t addr = 0; addr < UINT16_MAX; ++addr) {
+      uint16_t val = memory[addr];
+      uint16_t intensity = val >> 8; // you can change this mapping
+      uint32_t color = (0xFF << 24) | // A
+                  (intensity << 16) | // R
+                  (intensity << 8)  | // G
+                  (intensity);        // B
+
+      pixel_ptr[addr] = color;
+  }
+
+  SDL_UnlockTexture(texture);
+}
 
 int main(int argc, const char* argv[]) {
+
+  Uint32 last_frame_time = 0;
+  const Uint32 frame_delay = 1000 / 60; // 60 FPS
+
   if (argc < 2) {
     /* show instructions on how to use */
     printf("lc3 [image-file1] ...\n");
@@ -22,6 +50,28 @@ int main(int argc, const char* argv[]) {
       exit(1);
     }
   }
+
+  if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    // SDL failed to initialize
+    return 1;
+  }
+  
+  SDL_Window* window = SDL_CreateWindow("Memory Map",
+    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+    WINDOW_SIZE, WINDOW_SIZE,
+    SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+    );
+
+  SDL_Renderer* renderer = SDL_CreateRenderer(
+    window, -1, SDL_RENDERER_ACCELERATED
+  );
+
+  SDL_Texture* texture = SDL_CreateTexture(
+    renderer,
+    SDL_PIXELFORMAT_RGBA8888, // 32-bit texture
+    SDL_TEXTUREACCESS_STREAMING, // we'll update it every frame
+    MEMORY_MAP_DIM, MEMORY_MAP_DIM
+);
 
   /* Ensure proper input handling from the terminal */
   signal(SIGINT, handle_interrupt);
@@ -37,6 +87,31 @@ int main(int argc, const char* argv[]) {
   while (running) {
     uint16_t instr = mem_read(reg[R_PC]++);
     uint16_t op = instr >> 12;
+
+    /* TODO: Implement Memory Map */
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+      if (event.type == SDL_QUIT) {
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        // restore_input_buffering();
+        // exit(0);
+      }
+    }
+    Uint32 current_time = SDL_GetTicks();
+
+    if (current_time - last_frame_time >= frame_delay) {// 60 FPS
+      /* update the frame */
+      update_texture(texture, memory);
+      SDL_RenderClear(renderer);
+
+      SDL_Rect dest_rect = { 0, 0, WINDOW_SIZE, WINDOW_SIZE };
+      SDL_RenderCopy(renderer, texture, NULL, &dest_rect);
+      SDL_RenderPresent(renderer);
+      last_frame_time = current_time;
+    }
+
 
     switch (op) {
       case OP_ADD:
