@@ -20,13 +20,9 @@ add_library(audio audio.c audio.h)
 
 add_executable(pVMpkin main.c)
 
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS})
-target_link_libraries(audio ${SDL2_LIBRARIES})
-
 target_link_libraries(utils PRIVATE ${SDL2_LIBRARIES})
-target_link_libraries(pVMpkin PRIVATE ${SDL2_LIBRARIES})
+target_link_libraries(audio PRIVATE utils ${SDL2_LIBRARIES})
 target_link_libraries(instructions PRIVATE utils memory)
 target_link_libraries(memory PRIVATE utils)
 target_link_libraries(trapping PRIVATE memory)
-target_link_libraries(pVMpkin PRIVATE memory utils instructions trapping)
+target_link_libraries(pVMpkin PRIVATE audio memory utils instructions trapping ${SDL2_LIBRARIES})
