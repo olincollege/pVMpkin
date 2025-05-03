@@ -15,9 +15,9 @@ int process_audio(const char* audio_path, const char* output_pcm) {
   const int command_len = 512;
   char command[command_len];
   int written =
-      snprintf(command, sizeof(command),
-               "ffmpeg -y -i \"%s\" -t 5 -ar 8000 -ac 1 -f s16le \"%s\"",
-               audio_path, output_pcm);
+        snprintf(command, sizeof(command),
+          "ffmpeg -y -i \"%s\" -t 5 -af \"aresample=resampler=soxr:precision=28:osf=s16:ocl=mono:dither_method=none,volume=-3dB,lowpass=f=5000:r=0.1\" -ar 12000 -ac 1 -f s16le \"%s\"",
+          audio_path, output_pcm);
 
   if (written < 0 || (size_t)written >= sizeof(command)) {
     error_and_exit("Error: snprintf overflow or failed");
@@ -112,17 +112,17 @@ int queued_samples;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variable
 
 void audio_output(uint16_t audio_sample) {
   SDL_QueueAudio(audio_device, &audio_sample, sizeof(audio_sample));
-  queued_samples++;
+  // queued_samples++;
 
-  if (queued_samples == AUDIO_QUEUE_LIMIT) {
+  // if (queued_samples == AUDIO_QUEUE_LIMIT) {
     SDL_PauseAudioDevice(audio_device, 0);
-    printf("Audio started\n");
-  }
+  //   printf("Audio started\n");
+  // }
 }
 
 void audio_reset_buffering(void) {
   queued_samples = 0;
-  SDL_ClearQueuedAudio(audio_device);
+  // SDL_ClearQueuedAudio(audio_device);
 }
 
 void audio_close(void) {

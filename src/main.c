@@ -18,7 +18,7 @@
 #include "utils.h"
 
 // NOLINTBEGIN(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
-#define PC_START 0x3000
+#define PC_START 0x1000
 #define WINDOW_SIZE 1024
 #define MEMORY_MAP_DIM 256
 #define OPCODE_SHIFT (uint16_t)12
