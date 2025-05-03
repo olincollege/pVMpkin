@@ -31,28 +31,21 @@ int main(int argc, const char* argv[]) {
 
   if (argc < 2) {
     /* show instructions on how to use */
-    printf("main [audio-file1] ...\n");
-    // NOLINTNEXTLINE(concurrency-mt-unsafe)
-    exit(2);
+    error_and_exit("main [audio-file1] ...\n");
   }
 
   audio_init();
 
   if (!read_image("../player.obj")) {
-    printf("failed to load player");
-    // NOLINTNEXTLINE(concurrency-mt-unsafe)
-    exit(1);
+    error_and_exit("Failed to load audio player\n");
   }
 
   if (!read_image(argv[1])) {
-    printf("failed to load image: %s\n", argv[1]);
-    // NOLINTNEXTLINE(concurrency-mt-unsafe)
-    exit(1);
+    error_and_exit("Failed to load audio\n");
   }
 
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-    // SDL failed to initialize
-    return 1;
+    error_and_exit("Failed to inialize SDL\n");
   }
 
   SDL_Window* window = SDL_CreateWindow(
