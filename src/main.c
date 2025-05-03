@@ -27,7 +27,7 @@ int main(int argc, const char* argv[]) {
 
   audio_init();
 
-  if (!read_image("../../player.obj")) {
+  if (!read_image("../player.obj")) {
     printf("failed to load player");
     exit(1);
   }

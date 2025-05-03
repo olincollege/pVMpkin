@@ -20,7 +20,7 @@ add_library(audio audio.c audio.h)
 
 add_executable(pVMpkin main.c)
 
-target_link_libraries(utils PRIVATE ${SDL2_LIBRARIES})
+target_link_libraries(utils PRIVATE memory audio ${SDL2_LIBRARIES})
 target_link_libraries(audio PRIVATE utils ${SDL2_LIBRARIES})
 target_link_libraries(instructions PRIVATE utils memory)
 target_link_libraries(memory PRIVATE utils)
