@@ -1,4 +1,12 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_pixels.h>
+#include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_stdinc.h>
+#include <SDL2/SDL_timer.h>
+#include <SDL2/SDL_video.h>
+#include <signal.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,11 +17,13 @@
 #include "trapping.h"
 #include "utils.h"
 
+// NOLINTBEGIN(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
 #define PC_START 0x3000
 #define WINDOW_SIZE 1024
 #define MEMORY_MAP_DIM 256
 #define OPCODE_SHIFT (uint16_t)12
 #define FIRST_8BIT_MASK (uint16_t)0xFF
+// NOLINTEND(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
 
 int main(int argc, const char* argv[]) {
   Uint32 last_frame_time = 0;
@@ -73,7 +83,7 @@ int main(int argc, const char* argv[]) {
   int running = 1;
   while (running) {
     uint32_t instr = mem_read(reg[R_PC]++);
-    uint16_t opcode = instr >> OPCODE_SHIFT;
+    uint16_t opcode = (uint16_t)instr >> OPCODE_SHIFT;
 
     /* TODO: Implement Memory Map */
     SDL_Event event;
@@ -161,6 +171,8 @@ int main(int argc, const char* argv[]) {
             break;
           case TRAP_HALT:
             trap_halt(&running);
+            break;
+          default:
             break;
         }
         break;
