@@ -74,3 +74,24 @@ int read_image(const char* image_path) {
   fclose(file);
   return 1;
 }
+
+void update_texture(SDL_Texture* texture, uint16_t* memory) {
+  void* pixels;
+  int pitch;
+  SDL_LockTexture(texture, NULL, &pixels, &pitch);
+
+  uint32_t* pixel_ptr = (uint32_t*)pixels;
+
+  for (uint16_t addr = 0; addr < UINT16_MAX; ++addr) {
+    uint16_t val = memory[addr];
+    uint16_t intensity = (val >> 8) & 0xFF;
+    uint32_t color = (0xFF << 24) | // A
+                (intensity << 16) | // R
+                (intensity << 8)  | // G
+                (intensity);        // B
+
+    pixel_ptr[addr] = color;
+  }
+
+  SDL_UnlockTexture(texture);
+}

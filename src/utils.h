@@ -8,6 +8,8 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <SDL2/SDL.h>
+
 
 #include "memory.h"
 
@@ -57,10 +59,10 @@ enum {
 
 enum {
   TRAP_GETC =
-      0x20, /* get character from keyboard, not echoed onto the terminal */
+      0x20, /* get character from keyboard, not echoed onto terminal */
   TRAP_OUT = 0x21,   /* output a character */
   TRAP_PUTS = 0x22,  /* output a word string */
-  TRAP_IN = 0x23,    /* get character from keyboard, echoed onto the terminal */
+  TRAP_IN = 0x23,    /* get character from keyboard, echoed onto terminal */
   TRAP_PUTSP = 0x24, /* output a byte string */
   TRAP_HALT = 0x25   /* halt the program */
 };
@@ -85,12 +87,13 @@ void restore_input_buffering(void);
 /**
  * Checks if a key has been pressed and returns its value.
  * 
- * @return The key pressed as a 16-bit unsigned integer, or 0 if no key is pressed.
+ * @return The key pressed as a 16-bit unsigned integer, or 0 if no key is 
+ *         pressed.
  */
 uint16_t check_key(void);
 
 /**
- * Handles interrupt signals (e.g., SIGINT) to perform cleanup or other actions.
+ * Handles interrupt signals to perform cleanup or other actions.
  * 
  * @param signal The signal number that triggered the interrupt.
  */
@@ -128,3 +131,13 @@ void read_image_file(FILE* file);
  * @param image_path a String representing the path to the image.
  */
 int read_image(const char* image_path);
+
+/**
+ * Updates the given SDL_Texture with the values of the addresses stored in the
+ * memory.
+ *
+ * @param texture A pointer to the SDL_Texture to be updated.
+ * @param memory  A pointer to a uint16_t memory array to read from and update
+ *                the texture with.
+ */
+void update_texture(SDL_Texture* texture, uint16_t* memory);
