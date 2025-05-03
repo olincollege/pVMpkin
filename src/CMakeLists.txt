@@ -19,7 +19,7 @@ add_library(memory memory.c memory.h)
 
 add_executable(pVMpkin main.c)
 
-target_link_libraries(main PRIVATE ${SDL2_LIBRARIES})
+target_link_libraries(pVMpkin PRIVATE ${SDL2_LIBRARIES})
 target_link_libraries(instructions PRIVATE utils memory)
 target_link_libraries(memory PRIVATE utils)
 target_link_libraries(trapping PRIVATE memory)
