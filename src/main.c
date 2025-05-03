@@ -1,7 +1,7 @@
+#include <SDL2/SDL.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL2/SDL.h>
 
 #include "audio.h"
 #include "instructions.h"
@@ -12,6 +12,8 @@
 #define PC_START 0x3000
 #define WINDOW_SIZE 1024
 #define MEMORY_MAP_DIM 256
+#define OPCODE_SHIFT (uint16_t)12
+#define FIRST_8BIT_MASK (uint16_t)0xFF
 
 
 int main(int argc, const char* argv[]) {
@@ -22,6 +24,7 @@ int main(int argc, const char* argv[]) {
   if (argc < 2) {
     /* show instructions on how to use */
     printf("main [audio-file1] ...\n");
+    // NOLINTNEXTLINE(concurrency-mt-unsafe)
     exit(2);
   }
 
@@ -29,11 +32,13 @@ int main(int argc, const char* argv[]) {
 
   if (!read_image("../player.obj")) {
     printf("failed to load player");
+    // NOLINTNEXTLINE(concurrency-mt-unsafe)
     exit(1);
   }
 
   if (!read_image(argv[1])) {
     printf("failed to load image: %s\n", argv[1]);
+    // NOLINTNEXTLINE(concurrency-mt-unsafe)
     exit(1);
   }
 
@@ -45,7 +50,7 @@ int main(int argc, const char* argv[]) {
   SDL_Window* window = SDL_CreateWindow("Memory Map",
     SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
     WINDOW_SIZE, WINDOW_SIZE,
-    SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+    (Uint32)SDL_WINDOW_SHOWN | (Uint32)SDL_WINDOW_RESIZABLE
     );
 
   SDL_Renderer* renderer = SDL_CreateRenderer(
@@ -60,7 +65,10 @@ int main(int argc, const char* argv[]) {
 );
 
   /* Ensure proper input handling from the terminal */
-  signal(SIGINT, handle_interrupt);
+  //NOLINTNEXTLINE(bugprone-signal-handler,cert-sig30-c)
+  if (signal(SIGINT, handle_interrupt) == SIG_ERR) { 
+    error_and_exit("Unable to set signal handler.");
+  }
   disable_input_buffering();
 
   /* since one condition flag should be set at all times, set the Z flag*/
@@ -72,7 +80,7 @@ int main(int argc, const char* argv[]) {
   int running = 1;
   while (running) {
     uint16_t instr = mem_read(reg[R_PC]++);
-    uint16_t op = instr >> 12;
+    uint16_t opcode = instr >> OPCODE_SHIFT;
 
     /* TODO: Implement Memory Map */
     SDL_Event event;
@@ -81,8 +89,9 @@ int main(int argc, const char* argv[]) {
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
-        // restore_input_buffering();
-        // exit(0);
+        restore_input_buffering();
+        // NOLINTNEXTLINE(concurrency-mt-unsafe)
+        exit(0);
       }
     }
     Uint32 current_time = SDL_GetTicks();
@@ -99,7 +108,7 @@ int main(int argc, const char* argv[]) {
     }
 
 
-    switch (op) {
+    switch (opcode) {
       case OP_ADD:
         add_instr(&instr);
         break;
@@ -142,7 +151,7 @@ int main(int argc, const char* argv[]) {
       case OP_TRAP:
         reg[R_R7] = reg[R_PC];
 
-        switch (instr & 0xFF) {
+        switch (instr & FIRST_8BIT_MASK) {
           case TRAP_GETC:
             trap_getc();
             break;
@@ -162,6 +171,12 @@ int main(int argc, const char* argv[]) {
             trap_halt(&running);
             break;
         }
+        break;
+
+      default:
+        printf("Unknown opcode: 0x%X\n", opcode);
+        running = 0;
+        break;
     }
   }
   restore_input_buffering();  // restores the terminal back to normal
