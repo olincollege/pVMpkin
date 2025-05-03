@@ -108,8 +108,7 @@ void audio_init(void) {
   }
 }
 
-static int
-    queued_samples;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+int queued_samples;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
 void audio_output(uint16_t audio_sample) {
   SDL_QueueAudio(audio_device, &audio_sample, sizeof(audio_sample));
