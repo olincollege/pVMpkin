@@ -4,6 +4,28 @@
 
 #include "utils.h"
 
+#define REG 0x07U
+#define FLAG 0x1U
+#define IMM_NUM 0x1FU
+#define OFFSET 0x3FU
+#define PC_OFFSET 0x1FFU
+#define LONG_PC_OFFSET 0x7FFU
+#define COND_FLAG 0x7U
+#define ONES 0xFFFFU
+#define SIGN 0x1U
+
+#define DEST_REG_SHIFT 9U
+#define VALUE_REG_SHIFT 6U
+#define STORE_VALUE_REG_SHIFT 9U
+#define IMM_FLAG_SHIFT 5U
+#define COND_FLAG_SHIFT 9U
+#define LONG_FLAG_SHIFT 11U
+
+#define PC_OFFSET_BIT_LEN 9
+#define OFFSET_BIT_LEN 6
+#define IMM_NUM_BIT_LEN 5
+#define LONG_PC_OFFSET_BIT_LEN 11
+
 /**
  * Extends a signed number with 'bit_count' bits to a 16-bit signed integer.
  *
@@ -12,7 +34,7 @@
  *
  * @return The 16-bit sign-extended value.
  */
-uint16_t sign_extend(uint16_t x, int bit_count);
+uint16_t sign_extend(uint16_t num, uint8_t bit_count);
 
 /**
  * Implements the ADD instruction.
@@ -27,7 +49,7 @@ uint16_t sign_extend(uint16_t x, int bit_count);
  *
  * @return void
  */
-void add_instr(uint16_t* instr);
+void add_instr(const uint32_t instr);
 
 /**
  * Implements the LDI (Load Indirect) instruction.
@@ -40,7 +62,7 @@ void add_instr(uint16_t* instr);
  *
  * @return void
  */
-void ldi_instr(uint16_t* instr);
+void ldi_instr(const uint32_t instr);
 
 /**
  * Implements the AND instruction.
@@ -54,7 +76,7 @@ void ldi_instr(uint16_t* instr);
  *
  * @return void
  */
-void and_instr(uint16_t* instr);
+void and_instr(const uint32_t instr);
 
 /**
  * Implements the NOT instruction.
@@ -67,7 +89,7 @@ void and_instr(uint16_t* instr);
  *
  * @return void
  */
-void not_instr(uint16_t* instr);
+void not_instr(const uint32_t instr);
 
 /**
  * Implements the BR (Branch) instruction.
@@ -80,7 +102,7 @@ void not_instr(uint16_t* instr);
  *
  * @return void
  */
-void branch_instr(uint16_t* instr);
+void branch_instr(const uint32_t instr);
 
 /**
  * Implements the JMP or RET instruction.
@@ -93,7 +115,7 @@ void branch_instr(uint16_t* instr);
  *
  * @return void
  */
-void jump_instr(uint16_t* instr);
+void jump_instr(const uint32_t instr);
 
 /**
  * Implements the JSR and JSRR instructions.
@@ -107,7 +129,7 @@ void jump_instr(uint16_t* instr);
  *
  * @return void
  */
-void jump_register_instr(uint16_t* instr);
+void jump_register_instr(const uint32_t instr);
 
 /**
  * Implements the LD (Load) instruction.
@@ -120,7 +142,7 @@ void jump_register_instr(uint16_t* instr);
  *
  * @return void
  */
-void load_instr(uint16_t* instr);
+void load_instr(const uint32_t instr);
 
 /**
  * Implements the LDR (Load Register) instruction.
@@ -133,7 +155,7 @@ void load_instr(uint16_t* instr);
  *
  * @return void
  */
-void load_reg_instr(uint16_t* instr);
+void load_reg_instr(const uint32_t instr);
 
 /**
  * Implements the LEA (Load Effective Address) instruction.
@@ -146,7 +168,7 @@ void load_reg_instr(uint16_t* instr);
  *
  * @return void
  */
-void load_eff_addr_instr(uint16_t* instr);
+void load_eff_addr_instr(const uint32_t instr);
 
 /**
  * Implements the ST (Store) instruction.
@@ -159,7 +181,7 @@ void load_eff_addr_instr(uint16_t* instr);
  *
  * @return void
  */
-void store_instr(uint16_t* instr);
+void store_instr(const uint32_t instr);
 
 /**
  * Implements the STI (Store Indirect) instruction.
@@ -172,7 +194,7 @@ void store_instr(uint16_t* instr);
  *
  * @return void
  */
-void store_indirect_instr(uint16_t* instr);
+void store_indirect_instr(const uint32_t instr);
 
 /**
  * Implements the STR (Store Register) instruction.
@@ -185,4 +207,4 @@ void store_indirect_instr(uint16_t* instr);
  *
  * @return void
  */
-void store_reg_instr(uint16_t* instr);
+void store_reg_instr(const uint32_t instr);
