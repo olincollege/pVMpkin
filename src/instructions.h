@@ -4,6 +4,7 @@
 
 #include "utils.h"
 
+// NOLINTBEGIN(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
 #define REG 0x07U
 #define FLAG 0x1U
 #define IMM_NUM 0x1FU
@@ -25,6 +26,7 @@
 #define OFFSET_BIT_LEN 6
 #define IMM_NUM_BIT_LEN 5
 #define LONG_PC_OFFSET_BIT_LEN 11
+// NOLINTEND(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
 
 /**
  * Extends a signed number with 'bit_count' bits to a 16-bit signed integer.
@@ -49,7 +51,7 @@ uint16_t sign_extend(uint16_t num, uint8_t bit_count);
  *
  * @return void
  */
-void add_instr(const uint32_t instr);
+void add_instr(uint32_t instr);
 
 /**
  * Implements the LDI (Load Indirect) instruction.
@@ -62,7 +64,7 @@ void add_instr(const uint32_t instr);
  *
  * @return void
  */
-void ldi_instr(const uint32_t instr);
+void ldi_instr(uint32_t instr);
 
 /**
  * Implements the AND instruction.
@@ -76,7 +78,7 @@ void ldi_instr(const uint32_t instr);
  *
  * @return void
  */
-void and_instr(const uint32_t instr);
+void and_instr(uint32_t instr);
 
 /**
  * Implements the NOT instruction.
@@ -89,7 +91,7 @@ void and_instr(const uint32_t instr);
  *
  * @return void
  */
-void not_instr(const uint32_t instr);
+void not_instr(uint32_t instr);
 
 /**
  * Implements the BR (Branch) instruction.
@@ -102,7 +104,7 @@ void not_instr(const uint32_t instr);
  *
  * @return void
  */
-void branch_instr(const uint32_t instr);
+void branch_instr(uint32_t instr);
 
 /**
  * Implements the JMP or RET instruction.
@@ -115,7 +117,7 @@ void branch_instr(const uint32_t instr);
  *
  * @return void
  */
-void jump_instr(const uint32_t instr);
+void jump_instr(uint32_t instr);
 
 /**
  * Implements the JSR and JSRR instructions.
@@ -129,7 +131,7 @@ void jump_instr(const uint32_t instr);
  *
  * @return void
  */
-void jump_register_instr(const uint32_t instr);
+void jump_register_instr(uint32_t instr);
 
 /**
  * Implements the LD (Load) instruction.
@@ -142,7 +144,7 @@ void jump_register_instr(const uint32_t instr);
  *
  * @return void
  */
-void load_instr(const uint32_t instr);
+void load_instr(uint32_t instr);
 
 /**
  * Implements the LDR (Load Register) instruction.
@@ -155,7 +157,7 @@ void load_instr(const uint32_t instr);
  *
  * @return void
  */
-void load_reg_instr(const uint32_t instr);
+void load_reg_instr(uint32_t instr);
 
 /**
  * Implements the LEA (Load Effective Address) instruction.
@@ -168,7 +170,7 @@ void load_reg_instr(const uint32_t instr);
  *
  * @return void
  */
-void load_eff_addr_instr(const uint32_t instr);
+void load_eff_addr_instr(uint32_t instr);
 
 /**
  * Implements the ST (Store) instruction.
@@ -181,7 +183,7 @@ void load_eff_addr_instr(const uint32_t instr);
  *
  * @return void
  */
-void store_instr(const uint32_t instr);
+void store_instr(uint32_t instr);
 
 /**
  * Implements the STI (Store Indirect) instruction.
@@ -194,7 +196,7 @@ void store_instr(const uint32_t instr);
  *
  * @return void
  */
-void store_indirect_instr(const uint32_t instr);
+void store_indirect_instr(uint32_t instr);
 
 /**
  * Implements the STR (Store Register) instruction.
@@ -207,4 +209,4 @@ void store_indirect_instr(const uint32_t instr);
  *
  * @return void
  */
-void store_reg_instr(const uint32_t instr);
+void store_reg_instr(uint32_t instr);
