@@ -10,6 +10,12 @@
 uint16_t reg[R_COUNT];
 struct termios original_tio;
 
+void error_and_exit(const char* error_msg) {
+  perror(error_msg);
+  // NOLINTNEXTLINE(concurrency-mt-unsafe)
+  exit(EXIT_FAILURE);
+}
+
 void disable_input_buffering(void) {
   tcgetattr(STDIN_FILENO, &original_tio);
   struct termios new_tio = original_tio;
@@ -38,17 +44,17 @@ void handle_interrupt(int signal) {
   exit(-2);
 }
 
-void update_flags(uint16_t r) {
-  if (reg[r] == 0) {
+void update_flags(uint16_t R_Rx) {
+  if (reg[R_Rx] == 0) {
     reg[R_COND] = FL_ZRO;
-  } else if (reg[r] >> 15) {
+  } else if (reg[R_Rx] >> 15) {
     reg[R_COND] = FL_NEG;
   } else {
     reg[R_COND] = FL_POS;
   }
 }
 
-uint16_t swap16(uint16_t x) { return (x << 8) | (x >> 8); }
+uint16_t swap16(uint16_t bit) { return (bit << 8) | (bit >> 8); }
 
 void read_image_file(FILE* file) {
   /* the origin tells us where in memory to place the image */

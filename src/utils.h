@@ -1,18 +1,19 @@
 #pragma once
+#include <SDL2/SDL.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdnoreturn.h>
 #include <sys/mman.h>
 #include <sys/termios.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <SDL2/SDL.h>
-
 
 #include "audio.h"
 #include "memory.h"
+
 
 // Registers Enum
 enum {
@@ -30,6 +31,7 @@ enum {
 };
 
 // Register Storage
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
 extern uint16_t reg[R_COUNT];
 
 // Opcodes for Instructions
@@ -53,9 +55,9 @@ enum {
 };
 
 enum {
-  FL_POS = 1 << 0, /* Positive */
-  FL_ZRO = 1 << 1, /* Zero */
-  FL_NEG = 1 << 2  /* Negative */
+  FL_POS = 1U << 0U, /* Positive */
+  FL_ZRO = 1U << 1U, /* Zero */
+  FL_NEG = 1U << 2U  /* Negative */
 };
 
 enum {
@@ -75,6 +77,20 @@ enum {
   MR_KBDR = 0xFE02,       /* Keyboard data */
   MR_AUDIO_DATA = 0xFE04, /* Audio data */
 };
+
+
+/**
+ * Print an error message and exit with a failure status code.
+ *
+ * Upon an error, print an error message with a desired prefix. The prefix
+ * error_msg should describe the context in which the error occurred, followed
+ * by a more specific message corresponding to errno set by whatever function or
+ * system call that encountered the error. This function exits the program and
+ * thus does not return.
+ *
+ * @param error_msg The error message to print.
+ */
+noreturn void error_and_exit(const char* error_msg);
 
 /**
  * Disables input buffering to allow immediate keypress detection.
@@ -104,9 +120,9 @@ void handle_interrupt(int signal);
 /**
  * Updates the flag according to the value stored in the provided register
  *
- * @param r a uint16_t representing the register to update flags for
+ * @param R_Rx a uint16_t representing the register to update flags for
  */
-void update_flags(uint16_t r);
+void update_flags(uint16_t R_Rx);
 
 /**
  * Swap a u_int16t from little-endian to big-endian.
@@ -114,9 +130,9 @@ void update_flags(uint16_t r);
  * Most modern computers are little-endian. However, the LC-3 architecture
  * program expects big-endian.
  *
- * @param x the uint16_t to swap from little to big-endian.
+ * @param bit the uint16_t to swap from little to big-endian.
  */
-uint16_t swap16(uint16_t x);
+uint16_t swap16(uint16_t bit);
 
 /**
  * Read an image file into memory from a file pointer.
