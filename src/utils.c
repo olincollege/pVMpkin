@@ -38,12 +38,6 @@ uint16_t check_key(void) {
   return select(1, &readfds, NULL, NULL, &timeout) != 0;
 }
 
-void handle_interrupt(int signal) {
-  restore_input_buffering();
-  printf("\n");
-  exit(-2);
-}
-
 void update_flags(uint16_t R_Rx) {
   if (reg[R_Rx] == 0) {
     reg[R_COND] = FL_ZRO;

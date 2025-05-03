@@ -25,6 +25,7 @@
 #define FIRST_8BIT_MASK (uint16_t)0xFF
 // NOLINTEND(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
 
+
 int main(int argc, const char* argv[]) {
   Uint32 last_frame_time = 0;
   const Uint32 frame_delay = 1000 / 60;  // 60 FPS
@@ -60,11 +61,6 @@ int main(int argc, const char* argv[]) {
                         SDL_TEXTUREACCESS_STREAMING,  // update every frame
                         MEMORY_MAP_DIM, MEMORY_MAP_DIM);
 
-  /* Ensure proper input handling from the terminal */
-  // NOLINTNEXTLINE(bugprone-signal-handler,cert-sig30-c)
-  if (signal(SIGINT, handle_interrupt) == SIG_ERR) {
-    error_and_exit("Unable to set signal handler.");
-  }
   disable_input_buffering();
 
   /* since one condition flag should be set at all times, set the Z flag*/
@@ -74,6 +70,7 @@ int main(int argc, const char* argv[]) {
   reg[R_PC] = PC_START;
 
   int running = 1;
+
   while (running) {
     uint32_t instr = mem_read(reg[R_PC]++);
     uint16_t opcode = (uint16_t)instr >> OPCODE_SHIFT;
@@ -86,7 +83,9 @@ int main(int argc, const char* argv[]) {
         SDL_DestroyWindow(window);
         SDL_Quit();
         restore_input_buffering();
+        audio_close();
         // NOLINTNEXTLINE(concurrency-mt-unsafe)
+        printf("Exited Gracefully");
         exit(0);
       }
     }
@@ -178,6 +177,10 @@ int main(int argc, const char* argv[]) {
         break;
     }
   }
-  restore_input_buffering();  // restores the terminal back to normal
-  audio_close();
+  // SDL_DestroyTexture(texture);
+  // SDL_DestroyRenderer(renderer);
+  // SDL_DestroyWindow(window);
+  // SDL_Quit();
+  // restore_input_buffering();  // restores the terminal back to normal
+  // audio_close();
 }
