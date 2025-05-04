@@ -20,15 +20,4 @@ Test(audio_output, increments_queued_samples) {
             "Queued samples should increment by 1 after audio_output");
 }
 
-// --- Test audio_reset_buffering resets queued_samples ---
-
-Test(audio_reset_buffering, resets_queued_samples) {
-  queued_samples = 123;
-
-  audio_reset_buffering();
-
-  cr_assert(eq(int, queued_samples, 0),
-            "Queued samples should reset to 0 after reset_buffering");
-}
-
 // NOLINTEND

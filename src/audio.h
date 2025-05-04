@@ -60,14 +60,6 @@ void audio_init(void);
 void audio_output(uint16_t audio_sample);
 
 /**
- * @brief Clears all queued audio samples and resets internal counters.
- *
- * This function clears any samples currently queued for playback
- * and resets the internal queued sample counter to zero.
- */
-void audio_reset_buffering(void);
-
-/**
  * @brief Shuts down the SDL audio subsystem.
  *
  * This function stops the audio device, closes it, and quits the SDL
