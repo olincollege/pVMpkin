@@ -14,7 +14,8 @@
 #include "audio.h"
 #include "memory.h"
 
-enum { BYTE_LEN = 8U };
+// NOLINTNEXTLINE(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
+#define BYTE_LEN 8U
 
 // Registers Enum
 enum {
