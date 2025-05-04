@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/select.h>
-#include <sys/time.h>
 #include <termios.h>
 #include <unistd.h>
 
@@ -31,7 +30,7 @@ void error_and_exit(const char* error_msg) {
 void disable_input_buffering(void) {
   tcgetattr(STDIN_FILENO, &original_tio);
   struct termios new_tio = original_tio;
-  new_tio.c_lflag &= ~(ICANON | ECHO);
+  new_tio.c_lflag &= (tcflag_t) ~(ICANON | ECHO);
   tcsetattr(STDIN_FILENO, TCSANOW, &new_tio);
 }
 
@@ -124,11 +123,11 @@ void update_texture(SDL_Texture* texture) {
 
   for (uint16_t addr = 0; addr < MEMORY_MAX; ++addr) {
     uint16_t val = memory[addr];
-    uint16_t intensity = (val >> 8) & 0xFF;
-    uint32_t color = (0xFF << 24) |       // A
-                     (intensity << 16) |  // R
-                     (intensity << 8) |   // G
-                     (intensity);         // B
+    uint16_t intensity = (uint16_t)(val >> BIT_SHIFT_8) & BYTE_MASK;
+    uint32_t color = (BYTE_MASK << BIT_SHIFT_24) |            // A
+                     (uint16_t)(intensity << BIT_SHIFT_16) |  // R
+                     (uint16_t)(intensity << BIT_SHIFT_8) |   // G
+                     (intensity);                             // B
 
     pixel_ptr[addr] = color;
   }

@@ -14,8 +14,13 @@
 #include "audio.h"
 #include "memory.h"
 
-// NOLINTNEXTLINE(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
+// NOLINTBEGIN(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
 #define BYTE_LEN 8U
+#define BYTE_MASK 0xFFU
+#define BIT_SHIFT_8 8U
+#define BIT_SHIFT_16 16U
+#define BIT_SHIFT_24 24U
+// NOLINTEND(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
 
 // Registers Enum
 enum {
