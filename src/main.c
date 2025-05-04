@@ -175,10 +175,4 @@ int main(int argc, const char* argv[]) {
         break;
     }
   }
-  // SDL_DestroyTexture(texture);
-  // SDL_DestroyRenderer(renderer);
-  // SDL_DestroyWindow(window);
-  // SDL_Quit();
-  // restore_input_buffering();  // restores the terminal back to normal
-  // audio_close();
 }
