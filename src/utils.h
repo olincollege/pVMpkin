@@ -14,6 +14,7 @@
 #include "audio.h"
 #include "memory.h"
 
+#define BYTE_LEN 8U
 
 // Registers Enum
 enum {
@@ -61,8 +62,7 @@ enum {
 };
 
 enum {
-  TRAP_GETC =
-      0x20, /* get character from keyboard, not echoed onto terminal */
+  TRAP_GETC = 0x20,  /* get character from keyboard, not echoed onto terminal */
   TRAP_OUT = 0x21,   /* output a character */
   TRAP_PUTS = 0x22,  /* output a word string */
   TRAP_IN = 0x23,    /* get character from keyboard, echoed onto terminal */
@@ -77,7 +77,6 @@ enum {
   MR_KBDR = 0xFE02,       /* Keyboard data */
   MR_AUDIO_DATA = 0xFE04, /* Audio data */
 };
-
 
 /**
  * Print an error message and exit with a failure status code.
@@ -104,15 +103,15 @@ void restore_input_buffering(void);
 
 /**
  * Checks if a key has been pressed and returns its value.
- * 
- * @return The key pressed as a 16-bit unsigned integer, or 0 if no key is 
+ *
+ * @return The key pressed as a 16-bit unsigned integer, or 0 if no key is
  *         pressed.
  */
 uint16_t check_key(void);
 
 /**
  * Handles interrupt signals to perform cleanup or other actions.
- * 
+ *
  * @param signal The signal number that triggered the interrupt.
  */
 void handle_interrupt(int signal);
@@ -155,7 +154,5 @@ int read_image(const char* image_path);
  * memory.
  *
  * @param texture A pointer to the SDL_Texture to be updated.
- * @param memory  A pointer to a uint16_t memory array to read from and update
- *                the texture with.
  */
-void update_texture(SDL_Texture* texture, uint16_t* memory);
+void update_texture(SDL_Texture* texture);
