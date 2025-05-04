@@ -14,7 +14,7 @@
 #include "audio.h"
 #include "memory.h"
 
-#define BYTE_LEN 8U
+enum { BYTE_LEN = 8U };
 
 // Registers Enum
 enum {
