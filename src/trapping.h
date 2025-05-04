@@ -4,6 +4,11 @@
 #include "memory.h"
 #include "utils.h"
 
+// NOLINTBEGIN(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
+#define BIT_MASK_8 0xFFU
+#define BIT_SHIFT_8 8U
+// NOLINTEND(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
+
 /**
  * Trapping function for getting a char from keyboard, not echoed onto the
  * terminal.
