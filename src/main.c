@@ -6,7 +6,6 @@
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_video.h>
-#include <signal.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +23,6 @@
 #define OPCODE_SHIFT (uint16_t)12
 #define FIRST_8BIT_MASK (uint16_t)0xFF
 // NOLINTEND(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
-
 
 int main(int argc, const char* argv[]) {
   Uint32 last_frame_time = 0;
@@ -93,7 +91,7 @@ int main(int argc, const char* argv[]) {
 
     if (current_time - last_frame_time >= frame_delay) {  // 60 FPS
       /* update the frame */
-      update_texture(texture, memory);
+      update_texture(texture);
       SDL_RenderClear(renderer);
 
       SDL_Rect dest_rect = {0, 0, WINDOW_SIZE, WINDOW_SIZE};
