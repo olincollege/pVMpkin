@@ -55,6 +55,7 @@ To see the memory map with audio, add a `.mp3` or `.wav` file to this repository
 ```bash
 pip install gdown
 gdown --id 1cI-X_lbDg2bO1ecO7QM__7NbumhNRo6t -O mario.mp3
+gdown --id 1uEdPcXNh_1UhFWDaCnaSCBcbEz5r8j-D -O mario2.mp3
 ```
 
 Now run the `mario.mp3` from your `build` directory with:

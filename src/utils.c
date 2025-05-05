@@ -67,7 +67,7 @@ void read_image_file(FILE* file) {
   /* the origin tells us where in memory to place the image */
   uint16_t origin = 0;
   if (!fread(&origin, sizeof(origin), 1, file)) {
-    error_and_exit("Unable to read origin from imagw");
+    error_and_exit("Unable to read origin from image");
   }
   origin = swap16(origin);
 
