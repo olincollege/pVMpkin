@@ -8,38 +8,70 @@ Hi! We implemented our own LC-3 Virtual Machine (VM) in C following this [tutori
 
 ## Setup
 
-If you're on a Linux machine, first clone this repository with
+### Prerequisites
 
-```
-git clone git@github.com:olincollege/pVMpkin.git
+To compile and run this project, you will need:
+
+- A Linux machine
+- `git` for cloning the repository
+- `libsdl2-dev` for SDL2 support (installable via your package manager)
+
+### Installation
+
+1. Clone this repository:
+
+   ```bash
+   git clone git@github.com:olincollege/pVMpkin.git
+   ```
+
+2. Install SDL2 development libraries:
+
+   ```bash
+   sudo apt install libsdl2-dev
+   ```
+
+3. Build the project:
+
+   ```bash
+   cd pVMpkin/
+   mkdir build
+   cd build/
+   cmake ..
+   make
+   ```
+
+### Running the Virtual Machine
+
+From the `build/` directory, you can run LC-3 compiled Assembly programs using pVMpkin. We have included demo programs in the `demos` directory, borrowed from [this 2048 repo](https://github.com/rpendleton/lc3-2048/tree/main) and [this Rogue-like repo](https://github.com/justinmeiners/lc3-rogue).
+
+To run pVMpkin, use the following syntax from within your `build/` directory:
+
+```bash
+./src/pVMpkin [path_to_obj_file]
 ```
 
-and download SDL2 with
+To see the memory map with audio, add a `.mp3` or `.wav` file to this repository, keeping track of its path. Feel free to download a demo `.mp3` using:
 
-```
-sudo apt install libsdl2-dev
+```bash
+pip install gdown
+gdown --id 1cI-X_lbDg2bO1ecO7QM__7NbumhNRo6t -O mario.mp3
 ```
 
-Next, set up your build. Run the following commands in your shell in this order:
+Now run the `mario.mp3` from your `build` directory with:
 
+```bash
+./src/pVMpkin mario.mp3
 ```
-cd pVMpkin/
-mkdir build
-cd build/
-cmake ..
+
+<!-- For example, to run the 2048 demo:
+
+```bash
+git switch 2048
 make
-```
+./src/pVMpkin src/2048.obj
+``` -->
 
-Now, from your `build/` directory, you should be able to run any LC-3 compiled Assembly programs with pVMpkin. We've also provided a few demos (borrowed from [this 2048 repo](https://github.com/rpendleton/lc3-2048/tree/main) and [this Rogue-like repo](https://github.com/justinmeiners/lc3-rogue) in the `demos` directory.
+### Notes
 
-To run pVMpkin, call its executable on a LC-3 compiled .obj file:
-
-```
-./src/pVMpkin  [.obj file path]
-```
-
-For example, to run the 2048 demo, use the following command:
-
-```
-./src/pVMpkin  ../demos/2048.obj
-```
+- Ensure that the `.obj` files you run are LC-3 compiled Assembly programs.
+- For additional demos or to create your own programs, refer to the LC-3 Assembly documentation.
