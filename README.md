@@ -5,6 +5,7 @@ Hi! We implemented our own LC-3 Virtual Machine (VM) in C following this [tutori
 1. Building a conceptual understanding of virtualization
 2. Exploring each of the components of a VM
 3. Implementing our own version of a VM
+4. Expanding past our MVP by creating a screensaver with audio and visual functionality
 
 ## Setup
 
@@ -42,9 +43,9 @@ To compile and run this project, you will need:
 
 ### Running the Virtual Machine
 
-From the `build/` directory, you can run LC-3 compiled Assembly programs using pVMpkin. We have included demo programs in the `demos` directory, borrowed from [this 2048 repo](https://github.com/rpendleton/lc3-2048/tree/main) and [this Rogue-like repo](https://github.com/justinmeiners/lc3-rogue).
+From the `build/` directory, you can run LC-3 compiled Assembly programs using pVMpkin.
 
-To run pVMpkin, use the following syntax from within your `build/` directory:
+To run `pVMpkin`, use the following syntax from within your `build/` directory:
 
 ```bash
 ./src/pVMpkin [path_to_obj_file]
@@ -75,3 +76,4 @@ make
 
 - Ensure that the `.obj` files you run are LC-3 compiled Assembly programs.
 - For additional demos or to create your own programs, refer to the LC-3 Assembly documentation.
+- Our implementation that plays audio and displays the memory map diverges from the tutorial LC-3 architecture. Because we're playing audio, to run `.obj` files that constantly query user input, our audio isn't able to play fluently.Therefore, we decided to prioritize playing audio over running user-input images like LC-3 2048.obj.
