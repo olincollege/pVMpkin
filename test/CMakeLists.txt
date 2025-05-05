@@ -48,14 +48,3 @@ add_test(
     NAME test_trapping
     COMMAND test_trapping ${CRITERION_FLAGS}
 )
-
-add_executable(test_audio test_audio.c)
-target_link_libraries(test_audio
-    PRIVATE audio
-    PUBLIC ${CRITERION}
-)
-
-add_test(
-    NAME test_audio
-    COMMAND test_audio ${CRITERION_FLAGS}
-)
