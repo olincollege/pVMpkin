@@ -110,8 +110,7 @@ void restore_input_buffering(void);
 /**
  * Checks if a key has been pressed and returns its value.
  *
- * @return The key pressed as a 16-bit unsigned integer, or 0 if no key is
- *         pressed.
+ * @return The key pressed as a uint16_t, or 0 if no key is pressed.
  */
 uint16_t check_key(void);
 
@@ -130,12 +129,12 @@ void handle_interrupt(int signal);
 void update_flags(uint16_t R_Rx);
 
 /**
- * Swap a u_int16t from little-endian to big-endian.
+ * Swap the byte order of a uint16_t. Converts a little-endian value to 
+ * big-endian or vice versa.
  *
- * Most modern computers are little-endian. However, the LC-3 architecture
- * program expects big-endian.
- *
- * @param bit the uint16_t to swap from little to big-endian.
+ * @param bit The uint16_t to swap.
+ * 
+ * @return A uint16_t value with its byte order swapped.
  */
 uint16_t swap16(uint16_t bit);
 
@@ -149,9 +148,16 @@ uint16_t swap16(uint16_t bit);
 void read_image_file(FILE* file);
 
 /**
- * Reads an image file into memory from a path.
+ * Reads an image file or processes an audio file into an image-like object.
  *
- * @param image_path a String representing the path to the image.
+ * Handles image files and audio files (e.g., `.wav`, `.mp3`). For audio files,
+ * processes them into a temporary PCM file, converts it into an object file,
+ * and then reads it. For image files, directly reads the file.
+ *
+ * @param image_path Path to the image or audio file. Supported audio formats:
+ *                   `.wav`, `.mp3`.
+ *
+ * @return 1 on success, 0 on failure (e.g., file not found, processing error).
  */
 int read_image(const char* image_path);
 
