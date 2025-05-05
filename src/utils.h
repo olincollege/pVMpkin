@@ -129,11 +129,11 @@ void handle_interrupt(int signal);
 void update_flags(uint16_t R_Rx);
 
 /**
- * Swap the byte order of a uint16_t. Converts a little-endian value to 
+ * Swap the byte order of a uint16_t. Converts a little-endian value to
  * big-endian or vice versa.
  *
  * @param bit The uint16_t to swap.
- * 
+ *
  * @return A uint16_t value with its byte order swapped.
  */
 uint16_t swap16(uint16_t bit);

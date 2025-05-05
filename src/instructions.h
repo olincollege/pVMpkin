@@ -29,7 +29,7 @@
 // NOLINTEND(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
 
 /**
- * Sign-extends a signed number with the specified bit width to a uint16_t 
+ * Sign-extends a signed number with the specified bit width to a uint16_t
  * value.
  *
  * @param num: The value to be sign-extended.

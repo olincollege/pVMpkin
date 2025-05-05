@@ -14,7 +14,7 @@ enum {
 /**
  * Converts an audio file to a raw PCM file.
  *
- * This function uses `ffmpeg` to extract a 5-second, 8000Hz, mono, uint16_t 
+ * This function uses `ffmpeg` to extract a 5-second, 8000Hz, mono, uint16_t
  * PCM version of the input audio file and writes it to a specified
  * output file.
  *
