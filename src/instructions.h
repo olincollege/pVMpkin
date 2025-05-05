@@ -29,12 +29,13 @@
 // NOLINTEND(cppcoreguidelines-macro-to-enum, modernize-macro-to-enum)
 
 /**
- * Extends a signed number with 'bit_count' bits to a 16-bit signed integer.
+ * Sign-extends a signed number with the specified bit width to a uint16_t 
+ * value.
  *
- * @param x: The value to be sign-extended.
- * @param bit_count: The number of bits in the original value.
+ * @param num: The value to be sign-extended.
+ * @param bit_count: The number of significant bits in the original value.
  *
- * @return The 16-bit sign-extended value.
+ * @return The sign-extended uint16_t value.
  */
 uint16_t sign_extend(uint16_t num, uint8_t bit_count);
 
@@ -47,9 +48,7 @@ uint16_t sign_extend(uint16_t num, uint8_t bit_count);
  * - 0001 DR SR1 0 00 SR2 (Register mode)
  * - 0001 DR SR1 1 imm5   (Immediate mode)
  *
- * @param instr:  Pointer to the instruction.
- *
- * @return void
+ * @param instr: Pointer to the instruction.
  */
 void add_instr(uint32_t instr);
 
@@ -61,8 +60,6 @@ void add_instr(uint32_t instr);
  * - 1010 DR PCoffset9
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void ldi_instr(uint32_t instr);
 
@@ -75,8 +72,6 @@ void ldi_instr(uint32_t instr);
  * - 0101 DR SR1 1 imm5
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void and_instr(uint32_t instr);
 
@@ -88,8 +83,6 @@ void and_instr(uint32_t instr);
  * - 1001 DR SR 111111
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void not_instr(uint32_t instr);
 
@@ -101,8 +94,6 @@ void not_instr(uint32_t instr);
  * - 0000 n z p PCoffset9
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void branch_instr(uint32_t instr);
 
@@ -114,8 +105,6 @@ void branch_instr(uint32_t instr);
  * - 1100 000 BaseR 000000
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void jump_instr(uint32_t instr);
 
@@ -128,8 +117,6 @@ void jump_instr(uint32_t instr);
  * - 0100 0 00 BaseR ...  (JSRR)
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void jump_register_instr(uint32_t instr);
 
@@ -141,8 +128,6 @@ void jump_register_instr(uint32_t instr);
  * - 0010 DR PCoffset9
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void load_instr(uint32_t instr);
 
@@ -154,8 +139,6 @@ void load_instr(uint32_t instr);
  * - 0110 DR BaseR offset6
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void load_reg_instr(uint32_t instr);
 
@@ -167,8 +150,6 @@ void load_reg_instr(uint32_t instr);
  * - 1110 DR PCoffset9
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void load_eff_addr_instr(uint32_t instr);
 
@@ -180,8 +161,6 @@ void load_eff_addr_instr(uint32_t instr);
  * - 0011 SR PCoffset9
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void store_instr(uint32_t instr);
 
@@ -193,8 +172,6 @@ void store_instr(uint32_t instr);
  * - 1011 SR PCoffset9
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void store_indirect_instr(uint32_t instr);
 
@@ -206,7 +183,5 @@ void store_indirect_instr(uint32_t instr);
  * - 0111 SR BaseR offset6
  *
  * @param instr: Pointer to the instruction.
- *
- * @return void
  */
 void store_reg_instr(uint32_t instr);
