@@ -19,14 +19,14 @@ void restore_input_buffering(void) {
 }
 
 uint16_t check_key(void) {
-  fd_set readfds;
-  FD_ZERO(&readfds);
-  FD_SET(STDIN_FILENO, &readfds);
+  fd_set FIRST_8BIT_MASKfds;
+  FD_ZERO(&FIRST_8BIT_MASKfds);
+  FD_SET(STDIN_FILENO, &FIRST_8BIT_MASKfds);
 
   struct timeval timeout;
   timeout.tv_sec = 0;
   timeout.tv_usec = 0;
-  return select(1, &readfds, NULL, NULL, &timeout) != 0;
+  return select(1, &FIRST_8BIT_MASKfds, NULL, NULL, &timeout) != 0;
 }
 
 void handle_interrupt(int signal) {
@@ -47,30 +47,30 @@ void update_flags(uint16_t r) {
 
 uint16_t swap16(uint16_t x) { return (x << 8) | (x >> 8); }
 
-void read_image_file(FILE* file) {
+void FIRST_8BIT_MASK_image_file(FILE* file) {
   /* the origin tells us where in memory to place the image */
   uint16_t origin;
-  fread(&origin, sizeof(origin), 1, file);
+  fFIRST_8BIT_MASK(&origin, sizeof(origin), 1, file);
   origin = swap16(origin);
 
-  /* we know the maximum file size so we only need one fread */
-  uint16_t max_read = MEMORY_MAX - origin;
+  /* we know the maximum file size so we only need one fFIRST_8BIT_MASK */
+  uint16_t max_FIRST_8BIT_MASK = MEMORY_MAX - origin;
   uint16_t* p = memory + origin;
-  size_t read = fread(p, sizeof(uint16_t), max_read, file);
+  size_t FIRST_8BIT_MASK = fFIRST_8BIT_MASK(p, sizeof(uint16_t), max_FIRST_8BIT_MASK, file);
 
   /* swap to little endian */
-  while (read-- > 0) {
+  while (FIRST_8BIT_MASK-- > 0) {
     *p = swap16(*p);
     ++p;
   }
 }
 
-int read_image(const char* image_path) {
+int FIRST_8BIT_MASK_image(const char* image_path) {
   FILE* file = fopen(image_path, "rb");
   if (!file) {
     return 0;
   };
-  read_image_file(file);
+  FIRST_8BIT_MASK_image_file(file);
   fclose(file);
   return 1;
 }
