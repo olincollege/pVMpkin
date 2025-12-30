@@ -25,10 +25,11 @@ To compile and run this project, you will need:
    git clone git@github.com:olincollege/pVMpkin.git
    ```
 
-2. Install SDL2 development libraries:
+2. Install SDL2 development libraries, Criterion testing framework, and clang-tidy:
 
    ```bash
-   sudo apt install libsdl2-dev
+   sudo apt update
+   sudo apt install libsdl2-dev libcriterion-dev clang-tidy
    ```
 
 3. Build the project:
